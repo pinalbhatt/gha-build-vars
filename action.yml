@@ -2,6 +2,9 @@ name: 'GHA Build Vars'
 author: 'Pinal Bhatt'
 description: 'Gets Env Variables for Growth Builds'
 inputs:
+  pkgJsonLocation:
+    description: 'Path of package.json'
+    default: './'
   milliseconds:  # id of input
     description: 'number of milliseconds to wait'
     required: true
