@@ -1,4 +1,4 @@
-name: 'Growth CI Vars'
+name: 'GHA Build Vars'
 author: 'Pinal Bhatt'
 description: 'Gets Env Variables for Growth Builds'
 inputs:
