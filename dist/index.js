@@ -67,6 +67,7 @@ async function run() {
     console.log(`Reading package.json at ${pkgJsonLocation}`);
     console.log('GITHUB_RUN_ID', process.env.GITHUB_RUN_ID);
     console.log('GITHUB_REF', process.env.GITHUB_REF);
+    console.log('GITHUB_SHA', process.env.GITHUB_SHA);
     const packageVersion = getPackageVersion(pkgJsonLocation);
     const packageVersionTag = getPackageVersionTag(packageVersion);
     // core.debug((new Date()).toTimeString());
