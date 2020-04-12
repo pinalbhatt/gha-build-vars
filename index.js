@@ -11,7 +11,7 @@ async function run() {
     console.log(`Reading package.json at ${pkgJsonLocation}`);
 
     const packageVersion = getPackageVersion(pkgJsonLocation);
-    const packageVersionTag = getPackageVersionTag(pkgJsonLocation);
+    const packageVersionTag = getPackageVersionTag(packageVersion);
     // core.debug((new Date()).toTimeString());
     // await wait(parseInt(ms, 10));
     // / core.debug((new Date()).toTimeString());

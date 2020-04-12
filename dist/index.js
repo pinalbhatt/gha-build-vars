@@ -66,7 +66,7 @@ async function run() {
     console.log(`Reading package.json at ${pkgJsonLocation}`);
 
     const packageVersion = getPackageVersion(pkgJsonLocation);
-    const packageVersionTag = getPackageVersionTag(pkgJsonLocation);
+    const packageVersionTag = getPackageVersionTag(packageVersion);
     // core.debug((new Date()).toTimeString());
     // await wait(parseInt(ms, 10));
     // / core.debug((new Date()).toTimeString());
@@ -94,9 +94,8 @@ const getPackageJson = (path) => JSON.parse(readFileSync(join(path, 'package.jso
 
 const getPackageVersion = (path) => getPackageJson(path).version;
 
-const getPackageVersionTag = (path) => {
-  const ver = getPackageVersion(path);
-  const arr = ver.split('.');
+const getPackageVersionTag = (ver) => {
+  const arr = (ver.split('-')[0]).split('.');
   let tag = `${arr[0]}.${arr[1]}.${arr[2]}`;
   if (ver.toUpperCase().indexOf('-SNAPSHOT') > 0) {
     tag += '-SNAPSHOT';
