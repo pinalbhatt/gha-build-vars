@@ -55,29 +55,30 @@ module.exports = require("os");
 
 /* eslint no-console: 0 */
 const core = __webpack_require__(470);
-// const { context } = require('@actions/github');
-// const wait = require('./lib/wait');
 const { getPackageVersion, getPackageVersionTag } = __webpack_require__(231);
+const { getShortSHA, getBranchName, getBranchTag } = __webpack_require__(844);
 
-// most @actions toolkit packages have async methods
 async function run() {
   try {
     const pkgJsonLocation = core.getInput('pkgJsonLocation');
-    // const ms = core.getInput('milliseconds');
+    const shortSHALength = Number(core.getInput('shortSHALength'));
     console.log(`Reading package.json at ${pkgJsonLocation}`);
-    console.log('GITHUB_RUN_ID', process.env.GITHUB_RUN_ID);
-    console.log('GITHUB_RUN_NUMBER', process.env.GITHUB_RUN_NUMBER);
-    console.log('GITHUB_REF', process.env.GITHUB_REF);
-    console.log('GITHUB_SHA', process.env.GITHUB_SHA);
+    const shortSHA = getShortSHA(process.env.GITHUB_SHA, shortSHALength || 7);
+    console.log('a');
+    const branchName = getBranchName();
+    console.log('b');
+    const branchTag = getBranchTag();
+    console.log('c');
     const packageVersion = getPackageVersion(pkgJsonLocation);
-    const packageVersionTag = getPackageVersionTag(packageVersion);
-    // core.debug((new Date()).toTimeString());
-    // await wait(parseInt(ms, 10));
-    // / core.debug((new Date()).toTimeString());
+    const packageVersionTag = getPackageVersionTag(packageVersion, shortSHA);
 
-    // core.setOutput('time', new Date().toTimeString());
+    core.debug('this is core.debug');
+
     core.setOutput('packageVersion', packageVersion);
     core.setOutput('packageVersionTag', packageVersionTag);
+    core.setOutput('shortSHA', shortSHA);
+    core.setOutput('branchName', branchName);
+    core.setOutput('branchTag', branchTag);
   } catch (error) {
     core.setFailed(error.message);
   }
@@ -98,11 +99,13 @@ const getPackageJson = (path) => JSON.parse(readFileSync(join(path, 'package.jso
 
 const getPackageVersion = (path) => getPackageJson(path).version;
 
-const getPackageVersionTag = (ver) => {
+const getPackageVersionTag = (ver, sha) => {
   const arr = (ver.split('-')[0]).split('.');
   let tag = `${arr[0]}.${arr[1]}.${arr[2]}`;
   if (ver.toUpperCase().indexOf('-SNAPSHOT') > 0) {
     tag += '-SNAPSHOT';
+  } else {
+    tag += `-${sha}`;
   }
   return tag;
 };
@@ -427,6 +430,39 @@ module.exports = require("path");
 /***/ (function(module) {
 
 module.exports = require("fs");
+
+/***/ }),
+
+/***/ 844:
+/***/ (function(module) {
+
+
+const getShortSHA = (sha, length) => {
+  if (!sha) {
+    throw new Error('sha must be defined');
+  }
+  if (length <= 0 || !Number.isInteger(length)) {
+    throw new Error('length is invalid');
+  }
+  if (sha.length < length) {
+    throw new Error('input is too short');
+  }
+  return sha.substring(0, length);
+};
+
+const getBranchName = () => (process.env.GITHUB_REF).replace('refs/heads/', '');
+
+const getBranchTag = () => {
+  const branch = getBranchName();
+  return branch.replace(/\//g, '_');
+};
+
+module.exports = {
+  getShortSHA,
+  getBranchName,
+  getBranchTag,
+};
+
 
 /***/ })
 
