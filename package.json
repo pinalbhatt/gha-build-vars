@@ -1,12 +1,14 @@
 {
-  "name": "growth-gh-actions",
-  "version": "1.0.0",
+  "name": "@ww-digital/growth-gh-actions",
+  "version": "0.0.1",
   "description": "JavaScript Action Template",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint index.js",
+    "lint": "eslint ./",
+    "lintf": "eslint --fix ./",
     "package": "ncc build index.js -o dist",
-    "test": "eslint index.js && jest"
+    "test": "snyk test && npm run lint && jest",
+    "prepare": "snyk protect"
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,17 @@
   "devDependencies": {
     "@zeit/ncc": "0.22.1",
     "eslint": "6.8.0",
-    "jest": "25.3.0"
+    "eslint-config-airbnb-base": "14.1.0",
+    "eslint-plugin-import": "2.20.2",
+    "husky": "4.2.5",
+    "jest": "25.3.0",
+    "snyk": "1.305.1",
+    "eslint-plugin-jest": "23.8.2"
+  },
+  "snyk": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lintf"
+    }
   }
 }

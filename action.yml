@@ -1,13 +1,23 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Growth CI Vars'
+author: 'Pinal Bhatt'
+description: 'Gets Env Variables for Growth Builds'
 inputs:
   milliseconds:  # id of input
     description: 'number of milliseconds to wait'
     required: true
     default: '1000'
 outputs:
+  branchName:
+    description: branch name
+  packageVersionTag:
+    description: package version tag
+  packageVersion:
+    description: package version
   time: # output will be available to future steps 
     description: 'The message to output'
 runs:
   using: 'node12'
   main: 'dist/index.js'
+branding:
+  icon: 'dollar-sign'
+  color: 'blue'
