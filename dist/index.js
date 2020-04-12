@@ -55,26 +55,59 @@ module.exports = require("os");
 
 /* eslint no-console: 0 */
 const core = __webpack_require__(470);
-const wait = __webpack_require__(521);
-
+// const wait = require('./lib/wait');
+const { getPackageVersion, getPackageVersionTag } = __webpack_require__(231);
 
 // most @actions toolkit packages have async methods
 async function run() {
   try {
-    const ms = core.getInput('milliseconds');
-    console.log(`Waiting ${ms} milliseconds ...`);
+    const pkgJsonLocation = core.getInput('pkgJsonLocation');
+    // const ms = core.getInput('milliseconds');
+    console.log(`Reading package.json at ${pkgJsonLocation}`);
 
-    core.debug((new Date()).toTimeString());
-    await wait(parseInt(ms, 10));
-    core.debug((new Date()).toTimeString());
+    const packageVersion = getPackageVersion(pkgJsonLocation);
+    const packageVersionTag = getPackageVersionTag(pkgJsonLocation);
+    // core.debug((new Date()).toTimeString());
+    // await wait(parseInt(ms, 10));
+    // / core.debug((new Date()).toTimeString());
 
-    core.setOutput('time', new Date().toTimeString());
+    // core.setOutput('time', new Date().toTimeString());
+    core.setOutput('packageVersion', packageVersion);
+    core.setOutput('packageVersionTag', packageVersionTag);
   } catch (error) {
     core.setFailed(error.message);
   }
 }
 
 run();
+
+
+/***/ }),
+
+/***/ 231:
+/***/ (function(module, __unusedexports, __webpack_require__) {
+
+const { join } = __webpack_require__(622);
+const { readFileSync } = __webpack_require__(747);
+
+const getPackageJson = (path) => JSON.parse(readFileSync(join(path, 'package.json')).toString());
+
+const getPackageVersion = (path) => getPackageJson(path).version;
+
+const getPackageVersionTag = (path) => {
+  const ver = getPackageVersion(path);
+  const arr = ver.split('.');
+  let tag = `${arr[0]}.${arr[1]}.${arr[2]}`;
+  if (ver.toUpperCase().indexOf('-SNAPSHOT') > 0) {
+    tag += '-SNAPSHOT';
+  }
+  return tag;
+};
+
+module.exports = {
+  getPackageVersion,
+  getPackageVersionTag,
+};
 
 
 /***/ }),
@@ -380,27 +413,17 @@ exports.getState = getState;
 
 /***/ }),
 
-/***/ 521:
-/***/ (function(module) {
-
-/* eslint no-unused-vars: 0 */
-
-const wait = (milliseconds) => new Promise((resolve, reject) => {
-  if (typeof (milliseconds) !== 'number') {
-    reject(new Error('milleseconds not a number'));
-  }
-  setTimeout(() => resolve('done!'), milliseconds);
-});
-
-module.exports = wait;
-
-
-/***/ }),
-
 /***/ 622:
 /***/ (function(module) {
 
 module.exports = require("path");
+
+/***/ }),
+
+/***/ 747:
+/***/ (function(module) {
+
+module.exports = require("fs");
 
 /***/ })
 
