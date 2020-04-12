@@ -5,9 +5,16 @@ inputs:
   pkgJsonLocation:
     description: 'Path of package.json'
     default: './'
+  shortSHALength:
+    description: length of short SHA
+    default: '7'
 outputs:
   branchName:
     description: branch name
+  branchTag:
+    description: branch tag
+  shortSHA:
+    description: short SHA
   packageVersionTag:
     description: package version tag
   packageVersion:
