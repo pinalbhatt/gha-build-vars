@@ -55,6 +55,7 @@ module.exports = require("os");
 
 /* eslint no-console: 0 */
 const core = __webpack_require__(470);
+// const { context } = require('@actions/github');
 // const wait = require('./lib/wait');
 const { getPackageVersion, getPackageVersionTag } = __webpack_require__(231);
 
@@ -64,7 +65,8 @@ async function run() {
     const pkgJsonLocation = core.getInput('pkgJsonLocation');
     // const ms = core.getInput('milliseconds');
     console.log(`Reading package.json at ${pkgJsonLocation}`);
-
+    console.log('GITHUB_RUN_ID', process.env.GITHUB_RUN_ID);
+    console.log('GITHUB_REF', process.env.GITHUB_REF);
     const packageVersion = getPackageVersion(pkgJsonLocation);
     const packageVersionTag = getPackageVersionTag(packageVersion);
     // core.debug((new Date()).toTimeString());

@@ -1,5 +1,6 @@
 /* eslint no-console: 0 */
 const core = require('@actions/core');
+// const { context } = require('@actions/github');
 // const wait = require('./lib/wait');
 const { getPackageVersion, getPackageVersionTag } = require('./lib/pkg-version');
 
@@ -9,7 +10,8 @@ async function run() {
     const pkgJsonLocation = core.getInput('pkgJsonLocation');
     // const ms = core.getInput('milliseconds');
     console.log(`Reading package.json at ${pkgJsonLocation}`);
-
+    console.log('GITHUB_RUN_ID', process.env.GITHUB_RUN_ID);
+    console.log('GITHUB_REF', process.env.GITHUB_REF);
     const packageVersion = getPackageVersion(pkgJsonLocation);
     const packageVersionTag = getPackageVersionTag(packageVersion);
     // core.debug((new Date()).toTimeString());
