@@ -64,11 +64,8 @@ async function run() {
     const shortSHALength = Number(core.getInput('shortSHALength'));
     console.log(`Reading package.json at ${pkgJsonLocation}`);
     const shortSHA = getShortSHA(process.env.GITHUB_SHA, shortSHALength || 7);
-    console.log('a');
     const branchName = getBranchName();
-    console.log('b');
     const branchTag = getBranchTag();
-    console.log('c');
     const packageVersion = getPackageVersion(pkgJsonLocation);
     const packageVersionTag = getPackageVersionTag(packageVersion, shortSHA);
 
