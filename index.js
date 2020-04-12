@@ -11,6 +11,7 @@ async function run() {
     // const ms = core.getInput('milliseconds');
     console.log(`Reading package.json at ${pkgJsonLocation}`);
     console.log('GITHUB_RUN_ID', process.env.GITHUB_RUN_ID);
+    console.log('GITHUB_RUN_NUMBER', process.env.GITHUB_RUN_NUMBER);
     console.log('GITHUB_REF', process.env.GITHUB_REF);
     console.log('GITHUB_SHA', process.env.GITHUB_SHA);
     const packageVersion = getPackageVersion(pkgJsonLocation);
