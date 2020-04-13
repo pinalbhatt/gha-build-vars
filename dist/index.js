@@ -55,7 +55,7 @@ module.exports = require("os");
 
 /* eslint no-console: 0 */
 const core = __webpack_require__(470);
-const { getPackageVersion, getPackageVersionTag } = __webpack_require__(231);
+const { getPackageVersion, getPackageVersionTag, getSemVer } = __webpack_require__(231);
 const { getShortSHA, getBranchName, getBranchTag } = __webpack_require__(844);
 
 async function run() {
@@ -68,6 +68,7 @@ async function run() {
     const branchTag = getBranchTag();
     const packageVersion = getPackageVersion(pkgJsonLocation);
     const packageVersionTag = getPackageVersionTag(packageVersion, shortSHA);
+    const releaseBranch = `release/${getSemVer(packageVersion)}`;
 
     core.debug('this is core.debug');
 
@@ -76,6 +77,7 @@ async function run() {
     core.setOutput('shortSHA', shortSHA);
     core.setOutput('branchName', branchName);
     core.setOutput('branchTag', branchTag);
+    core.setOutput('releaseBranch', releaseBranch);
   } catch (error) {
     core.setFailed(error.message);
   }
@@ -96,9 +98,13 @@ const getPackageJson = (path) => JSON.parse(readFileSync(join(path, 'package.jso
 
 const getPackageVersion = (path) => getPackageJson(path).version;
 
-const getPackageVersionTag = (ver, sha) => {
+const getSemVer = (ver) => {
   const arr = (ver.split('-')[0]).split('.');
-  let tag = `${arr[0]}.${arr[1]}.${arr[2]}`;
+  return `${arr[0]}.${arr[1]}.${arr[2]}`;
+};
+
+const getPackageVersionTag = (ver, sha) => {
+  let tag = getSemVer(ver);
   if (ver.toUpperCase().indexOf('-SNAPSHOT') > 0) {
     tag += '-SNAPSHOT';
   } else {
@@ -107,9 +113,11 @@ const getPackageVersionTag = (ver, sha) => {
   return tag;
 };
 
+
 module.exports = {
   getPackageVersion,
   getPackageVersionTag,
+  getSemVer,
 };
 
 

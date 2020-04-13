@@ -1,6 +1,6 @@
 /* eslint no-console: 0 */
 const core = require('@actions/core');
-const { getPackageVersion, getPackageVersionTag } = require('./lib/pkg-version');
+const { getPackageVersion, getPackageVersionTag, getSemVer } = require('./lib/pkg-version');
 const { getShortSHA, getBranchName, getBranchTag } = require('./lib/gh');
 
 async function run() {
@@ -13,6 +13,7 @@ async function run() {
     const branchTag = getBranchTag();
     const packageVersion = getPackageVersion(pkgJsonLocation);
     const packageVersionTag = getPackageVersionTag(packageVersion, shortSHA);
+    const releaseBranch = `release/${getSemVer(packageVersion)}`;
 
     core.debug('this is core.debug');
 
@@ -21,6 +22,7 @@ async function run() {
     core.setOutput('shortSHA', shortSHA);
     core.setOutput('branchName', branchName);
     core.setOutput('branchTag', branchTag);
+    core.setOutput('releaseBranch', releaseBranch);
   } catch (error) {
     core.setFailed(error.message);
   }

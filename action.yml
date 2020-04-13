@@ -19,6 +19,8 @@ outputs:
     description: package version tag
   packageVersion:
     description: package version
+  releaseBranch:
+    description: name of release branch
 runs:
   using: 'node12'
   main: 'dist/index.js'
