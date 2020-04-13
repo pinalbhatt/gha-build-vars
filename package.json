@@ -8,6 +8,7 @@
     "lintf": "eslint --fix ./",
     "package": "ncc build index.js -o dist",
     "test": "snyk test && npm run lint && jest",
+    "build": "npm t && npm run package",
     "prepare": "snyk protect"
   },
   "repository": {

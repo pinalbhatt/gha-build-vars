@@ -65,7 +65,7 @@ async function run() {
     console.log(`Reading package.json at ${pkgJsonLocation}`);
     const shortSHA = getShortSHA(process.env.GITHUB_SHA, shortSHALength || 7);
     const branchName = getBranchName();
-    const branchTag = getBranchTag();
+    const branchTag = getBranchTag(shortSHA);
     const packageVersion = getPackageVersion(pkgJsonLocation);
     const packageVersionTag = getPackageVersionTag(packageVersion, shortSHA);
     const releaseBranch = `release/${getSemVer(packageVersion)}`;
@@ -73,7 +73,7 @@ async function run() {
     core.debug('this is core.debug');
 
     core.setOutput('packageVersion', packageVersion);
-    core.setOutput('packageVersionTag', packageVersionTag);
+    core.setOutput('versionTag', packageVersionTag);
     core.setOutput('shortSHA', shortSHA);
     core.setOutput('branchName', branchName);
     core.setOutput('branchTag', branchTag);
@@ -439,8 +439,9 @@ module.exports = require("fs");
 /***/ }),
 
 /***/ 844:
-/***/ (function(module) {
+/***/ (function(module, __unusedexports, __webpack_require__) {
 
+const { getPackageVersionTag } = __webpack_require__(231);
 
 const getShortSHA = (sha, length) => {
   if (!sha) {
@@ -457,9 +458,14 @@ const getShortSHA = (sha, length) => {
 
 const getBranchName = () => (process.env.GITHUB_REF).replace('refs/heads/', '');
 
-const getBranchTag = () => {
+const getBranchTag = (sha) => {
   const branch = getBranchName();
-  return branch.replace(/\//g, '_');
+  const verTag = getPackageVersionTag();
+  let tag = branch.replace(/\//g, '_');
+  if (verTag.indexOf('-SNAPSHOT') === -1) {
+    tag += `-${sha}`;
+  }
+  return tag;
 };
 
 module.exports = {

@@ -15,7 +15,7 @@ outputs:
     description: branch tag
   shortSHA:
     description: short SHA
-  packageVersionTag:
+  versionTag:
     description: package version tag
   packageVersion:
     description: package version
