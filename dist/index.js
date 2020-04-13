@@ -64,12 +64,17 @@ async function run() {
     const shortSHALength = Number(core.getInput('shortSHALength'));
     console.log(`Reading package.json at ${pkgJsonLocation}`);
     const shortSHA = getShortSHA(process.env.GITHUB_SHA, shortSHALength || 7);
+    console.log('shortSHA:', shortSHA);
     const branchName = getBranchName();
-    const branchTag = getBranchTag(shortSHA);
+    console.log('branchName:', branchName);
     const packageVersion = getPackageVersion(pkgJsonLocation);
+    console.log('packageVersion:', packageVersion);
     const packageVersionTag = getPackageVersionTag(packageVersion, shortSHA);
+    console.log('packageVersionTag:', packageVersionTag);
     const releaseBranch = `release/${getSemVer(packageVersion)}`;
-
+    console.log('releaseBranch:', releaseBranch);
+    const branchTag = getBranchTag(packageVersion, shortSHA);
+    console.log('branchTag:', branchTag);
     core.debug('this is core.debug');
 
     core.setOutput('packageVersion', packageVersion);
@@ -458,9 +463,9 @@ const getShortSHA = (sha, length) => {
 
 const getBranchName = () => (process.env.GITHUB_REF).replace('refs/heads/', '');
 
-const getBranchTag = (sha) => {
+const getBranchTag = (ver, sha) => {
   const branch = getBranchName();
-  const verTag = getPackageVersionTag();
+  const verTag = getPackageVersionTag(ver, sha);
   let tag = branch.replace(/\//g, '_');
   if (verTag.indexOf('-SNAPSHOT') === -1) {
     tag += `-${sha}`;
