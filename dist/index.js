@@ -461,7 +461,7 @@ const getShortSHA = (sha, length) => {
   return sha.substring(0, length);
 };
 
-const getBranchName = () => (process.env.GITHUB_REF).replace('refs/heads/', '');
+const getBranchName = () => (process.env.GITHUB_REF).replace(/refs\/[a-z]*\//, '');
 
 const getBranchTag = (ver, sha) => {
   const branch = getBranchName();
