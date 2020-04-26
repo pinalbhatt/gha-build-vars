@@ -73,11 +73,17 @@ async function run() {
     core.debug('this is core.debug');
 
     core.setOutput('packageVersion', packageVersion);
+    console.log('packageVersion', packageVersion);
     core.setOutput('packageVersionTag', packageVersionTag);
+    console.log('packageVersionTag', packageVersionTag);
     core.setOutput('shortSHA', shortSHA);
+    console.log('shortSHA', shortSHA);
     core.setOutput('branchName', branchName);
+    console.log('branchName', branchName);
     core.setOutput('branchTag', branchTag);
+    console.log('branchTag', branchTag);
     core.setOutput('releaseBranch', releaseBranch);
+    console.log('releaseBranch', releaseBranch);
   } catch (error) {
     core.setFailed(error.message);
   }
