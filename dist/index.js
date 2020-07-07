@@ -73,6 +73,7 @@ async function run() {
     const branchName = getBranchName();
     const branchTag = getBranchTag();
     const packageVersion = getPackageVersion(pkgJsonLocation);
+    console.log('packageVersion', packageVersion);
     const packageVersionTag = getPackageVersionTag(packageVersion, shortSHA);
     const releaseBranch = `release/${getSemVer(packageVersion)}`;
 
