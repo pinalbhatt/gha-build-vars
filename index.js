@@ -25,7 +25,7 @@ async function run() {
 
     core.setOutput('packageVersion', packageVersion);
     console.log('packageVersion', packageVersion);
-    core.setOutput('packageVersionTag', packageVersionTag);
+    core.setOutput('versionTag', packageVersionTag);
     console.log('packageVersionTag', packageVersionTag);
     core.setOutput('shortSHA', shortSHA);
     console.log('shortSHA', shortSHA);
