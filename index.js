@@ -8,14 +8,17 @@ async function run() {
     const pkgJsonLocation = core.getInput('pkgJsonLocation');
     const shortSHALength = Number(core.getInput('shortSHALength'));
     const shortSHA = getShortSHA(process.env.GITHUB_SHA, shortSHALength || 7);
-    const branchName = getBranchName();
-    const branchTag = getBranchTag();
-    console.log(`branchName ${branchName}`);
-    console.log(`branchTag ${branchTag}`);
+
     console.log(`Reading package.json at ${pkgJsonLocation}`);
     const packageVersion = getPackageVersion(pkgJsonLocation);
     console.log('packageVersion', packageVersion);
     const packageVersionTag = getPackageVersionTag(packageVersion, shortSHA);
+
+    const branchName = getBranchName();
+    const branchTag = getBranchTag(packageVersion, shortSHA);
+    console.log(`branchName ${branchTag}`);
+    console.log(`branchTag ${branchTag}`);
+
     const releaseBranch = `release/${getSemVer(packageVersion)}`;
 
     core.debug('this is core.debug');
