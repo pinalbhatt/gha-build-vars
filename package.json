@@ -7,9 +7,8 @@
     "lint": "eslint ./",
     "lintf": "eslint --fix ./",
     "package": "ncc build index.js -o dist",
-    "test": "snyk test && npm run lint && jest",
-    "build": "npm t && npm run package",
-    "prepare": "snyk protect"
+    "test": "npm run lint && jest",
+    "build": "npm t && npm run package"
   },
   "repository": {
     "type": "git",
@@ -23,19 +22,17 @@
   "author": "GitHub",
   "license": "PRIVATE",
   "dependencies": {
-    "@actions/core": "1.2.3"
+    "@actions/core": "1.2.4"
   },
   "devDependencies": {
-    "@zeit/ncc": "0.22.1",
-    "eslint": "6.8.0",
-    "eslint-config-airbnb-base": "14.1.0",
-    "eslint-plugin-import": "2.20.2",
+    "@zeit/ncc": "0.22.3",
+    "eslint": "7.4.0",
+    "eslint-config-airbnb-base": "14.2.0",
+    "eslint-plugin-import": "2.22.0",
     "husky": "4.2.5",
-    "jest": "25.3.0",
-    "snyk": "1.305.1",
-    "eslint-plugin-jest": "23.8.2"
+    "jest": "26.1.0",
+    "eslint-plugin-jest": "23.18.0"
   },
-  "snyk": true,
   "husky": {
     "hooks": {
       "pre-commit": "npm run lintf"
