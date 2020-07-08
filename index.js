@@ -14,6 +14,7 @@ async function run() {
     console.log('packageVersion', packageVersion);
     const packageVersionTag = getPackageVersionTag(packageVersion, shortSHA);
 
+    console.log('process.env.GITHUB_REF', process.env.GITHUB_REF);
     const branchName = getBranchName();
     const branchTag = getBranchTag(packageVersion, shortSHA);
     console.log(`branchName ${branchTag}`);
